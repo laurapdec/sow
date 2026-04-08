@@ -1,102 +1,118 @@
-import Image, { type ImageProps } from "next/image";
-import { Button } from "@repo/ui/button";
-import styles from "./page.module.css";
+'use client';
 
-type Props = Omit<ImageProps, "src"> & {
-  srcLight: string;
-  srcDark: string;
-};
+import { useEffect, useLayoutEffect, useMemo, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import Word from './components/Word';
+import Rain from './components/Rain';
+import SeedlingImg from './components/SeedlingImg';
+import styles from './page.module.css';
 
-const ThemeImage = (props: Props) => {
-  const { srcLight, srcDark, ...rest } = props;
+export default function LoadingScreen() {
+  const router = useRouter();
+
+  const [phase, setPhase] = useState<'idle' | 'animate'>('idle');
+  const [targets, setTargets] = useState<number[]>([]);
+
+  const smallSeedlings = useMemo(() => {
+    // Random positions from 25% to 95%, minimum 8% apart, avoiding the large seedling zone
+    const positions: number[] = [];
+    let attempts = 0;
+    while (positions.length < 8 && attempts < 200) {
+      attempts++;
+      const pos = 25 + Math.random() * 70;
+      if (positions.every((p) => Math.abs(p - pos) >= 8)) {
+        positions.push(pos);
+      }
+    }
+    return positions.map((left) => ({
+      left,
+      delay: Math.random() * 2.0,
+      size: 55 + Math.random() * 35, // 55–90px, slight size variety
+    }));
+  }, []);
+
+  // Calculate center targets for SOW letters
+  useLayoutEffect(() => {
+    const center = window.innerWidth / 2;
+    const spacing = 50;
+    setTargets([
+      center - spacing, // S
+      center,           // O
+      center + spacing, // W
+    ]);
+  }, []);
+
+  // Start animation
+  useEffect(() => {
+    const timer = setTimeout(() => setPhase('animate'), 1000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Redirect after animation finishes + extra wait
+  useEffect(() => {
+    if (phase !== 'animate') return;
+
+    const animationDuration = 2000; // match Word component duration
+    const waitAfter = 1500;        // wait to let users process SOW
+    const totalWait = animationDuration + waitAfter;
+
+    const timer = setTimeout(async () => {
+      try {
+        const res = await fetch('/api/auth/check', { cache: 'no-store' });
+        const data = await res.json();
+        if (data.loggedIn) router.push('/map');
+        else router.push('/auth');
+      } catch {
+        router.push('/auth');
+      }
+    }, totalWait);
+
+    return () => clearTimeout(timer);
+  }, [phase, router]);
 
   return (
-    <>
-      <Image {...rest} src={srcLight} className="imgLight" />
-      <Image {...rest} src={srcDark} className="imgDark" />
-    </>
-  );
-};
-
-export default function Home() {
-  return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <ThemeImage
-          className={styles.logo}
-          srcLight="turborepo-dark.svg"
-          srcDark="turborepo-light.svg"
-          alt="Turborepo logo"
-          width={180}
-          height={38}
-          priority
+    <div className={styles.container}>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src="/stars.svg" alt="" className={styles.star} />
+      {phase === 'animate' && <Rain />}
+      {/* Big seedling — 500ms after rain, GIF starts exactly then, freezes before loop */}
+      {phase === 'animate' && (
+        <SeedlingImg
+          id={0}
+          className={styles.seedlingLarge}
+          startAfter={500}
         />
-        <ol>
-          <li>
-            Get started by editing <code>apps/web/app/page.tsx</code>
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new/clone?demo-description=Learn+to+implement+a+monorepo+with+a+two+Next.js+sites+that+has+installed+three+local+packages.&demo-image=%2F%2Fimages.ctfassets.net%2Fe5382hct74si%2F4K8ZISWAzJ8X1504ca0zmC%2F0b21a1c6246add355e55816278ef54bc%2FBasic.png&demo-title=Monorepo+with+Turborepo&demo-url=https%3A%2F%2Fexamples-basic-web.vercel.sh%2F&from=templates&project-name=Monorepo+with+Turborepo&repository-name=monorepo-turborepo&repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fturborepo%2Ftree%2Fmain%2Fexamples%2Fbasic&root-directory=apps%2Fdocs&skippable-integrations=1&teamSlug=vercel&utm_source=create-turbo"
-            target="_blank"
-            rel="noopener noreferrer"
+      )}
+      {/* Small seedlings — each mounts when phase starts, GIF & rise both begin at startAfter */}
+      {phase === 'animate' && smallSeedlings.map((s, i) => {
+        const startAfter = Math.round((0.5 + s.delay) * 1000);
+        return (
+          <div
+            key={i}
+            className={styles.seedlingWrap}
+            style={{
+              left: `${s.left}%`,
+              width: `${s.size}px`,
+              animationDelay: `${startAfter / 1000}s`,
+            }}
           >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+            <SeedlingImg
+              id={i + 1}
+              className={styles.seedlingSmall}
+              startAfter={startAfter}
             />
-            Deploy now
-          </a>
-          <a
-            href="https://turborepo.dev/docs?utm_source"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            Read our docs
-          </a>
-        </div>
-        <Button appName="web" className={styles.secondary}>
-          Open alert
-        </Button>
-      </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com/templates?search=turborepo&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          href="https://turborepo.dev?utm_source=create-turbo"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to turborepo.dev →
-        </a>
-      </footer>
+          </div>
+        );
+      })}
+      <div className={styles.centerBox}>
+        {targets.length > 0 && (
+          <>
+            <Word upper="S" lower="haring" phase={phase} index={0} targetPositions={targets} />
+            <Word upper="O" lower="ur" phase={phase} index={1} targetPositions={targets} />
+            <Word upper="W" lower="ealth" phase={phase} index={2} targetPositions={targets} />
+          </>
+        )}
+      </div>
     </div>
   );
 }

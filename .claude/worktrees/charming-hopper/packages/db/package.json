@@ -1,0 +1,22 @@
+{
+  "name": "@teko/db",
+  "version": "0.0.1",
+  "main": "./index.ts",
+  "exports": {
+    ".": "./index.ts",
+    "./client.web": "./client.web.ts",
+    "./client.server": "./client.server.ts",
+    "./client.admin": "./client.admin.ts",
+    "./types": "./types.ts",
+    "./queries/places": "./queries/places.ts",
+    "./queries/profiles": "./queries/profiles.ts"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.49.4",
+    "@supabase/ssr": "^0.6.1"
+  },
+  "devDependencies": {
+    "@repo/typescript-config": "*",
+    "typescript": "5.9.2"
+  }
+}

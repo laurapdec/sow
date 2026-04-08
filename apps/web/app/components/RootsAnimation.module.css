@@ -1,0 +1,43 @@
+.fullScreen {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: #802f1f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.inlineWrap {
+  width: 100%;
+  max-width: 320px;
+  margin: 0 auto;
+}
+
+.modalWrap {
+  width: 100%;
+}
+
+.inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+}
+
+.svg {
+  width: 100%;
+  max-width: 300px;
+  height: auto;
+  display: block;
+}
+
+.heading {
+  font-family: var(--font-catchy-mager, 'CatchyMager', sans-serif);
+  font-size: 1.4rem;
+  color: rgba(255, 220, 170, 0.95);
+  text-align: center;
+  margin: 0;
+  letter-spacing: 0.04em;
+}

@@ -1,0 +1,12 @@
+{
+  "expo": {
+    "extra": {
+      "eas": {
+        "projectId": "2c54385a-f18a-4c67-ba73-8bf38914e687"
+      }
+    },
+    "android": {
+      "package": "com.teko"
+    }
+  }
+}

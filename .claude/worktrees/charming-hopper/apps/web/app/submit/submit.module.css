@@ -1,0 +1,124 @@
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 40px 24px 80px;
+  background: #0a0a0a;
+  min-height: 100vh;
+  color: #f5f5f0;
+}
+
+.title {
+  font-size: 28px;
+  font-weight: 700;
+  margin: 0 0 8px;
+}
+
+.subtitle {
+  font-size: 14px;
+  color: #888;
+  margin: 0 0 36px;
+  line-height: 1.5;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+  color: #aaa;
+  font-weight: 500;
+}
+
+.input,
+.textarea {
+  padding: 11px 14px;
+  border-radius: 8px;
+  border: 1px solid #222;
+  background: #111;
+  color: #f5f5f0;
+  font-size: 14px;
+  outline: none;
+  font-family: inherit;
+}
+
+.input:focus,
+.textarea:focus {
+  border-color: #14b8a6;
+}
+
+.textarea {
+  resize: vertical;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.fieldset {
+  border: 1px solid #222;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 0;
+}
+
+.legend {
+  font-size: 13px;
+  color: #aaa;
+  font-weight: 500;
+  padding: 0 6px;
+}
+
+.checkboxGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #ccc;
+  cursor: pointer;
+}
+
+.checkboxLabel input[type="checkbox"] {
+  accent-color: #14b8a6;
+}
+
+.error {
+  font-size: 13px;
+  color: #f87171;
+  margin: 0;
+}
+
+.button {
+  padding: 13px;
+  border-radius: 8px;
+  border: none;
+  background: #14b8a6;
+  color: white;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 8px;
+}
+
+.button:hover {
+  background: #0d9488;
+}
+
+.button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

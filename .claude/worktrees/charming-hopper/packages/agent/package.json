@@ -1,0 +1,16 @@
+{
+  "name": "@teko/agent",
+  "version": "0.0.1",
+  "main": "src/index.ts",
+  "scripts": {
+    "start": "npx tsx src/index.ts"
+  },
+  "dependencies": {
+    "@anthropic-ai/claude-agent-sdk": "latest"
+  },
+  "devDependencies": {
+    "@repo/typescript-config": "*",
+    "tsx": "^4.19.2",
+    "typescript": "5.9.2"
+  }
+}
