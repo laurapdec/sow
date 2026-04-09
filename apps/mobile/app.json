@@ -25,7 +25,7 @@
       "predictiveBackGestureEnabled": false,
       "config": {
         "googleMaps": {
-          "apiKey": "AIzaSyDUxegU_kCtmwU8E_l5xHwYcjjzSOKEcCY"
+            "apiKey": process.env.EXPO_PUBLIC_GOOGLE_MAPS_API_KEY
         }
       },
       "package": "com.sow"

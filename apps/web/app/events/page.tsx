@@ -42,6 +42,7 @@ interface GatheringEvent {
   gathererCount: number
   kindredAttending?: Array<{ name: string; initial: string }>
   isConvenedByMe?: boolean
+  isFull?: boolean
 }
 
 interface NewGathering {

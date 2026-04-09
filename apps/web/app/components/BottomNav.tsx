@@ -57,7 +57,7 @@ const NAV_ITEMS = [
   { id: 'map',       label: 'Map',       href: '/map',     Icon: MapIcon },
   { id: 'events',    label: 'Events',    href: '/events',  Icon: EventsIcon },
   { id: 'offerings', label: 'Offerings', href: '/offerings', Icon: OfferingsIcon },
-  { id: 'garden',    label: 'Garden',    href: '/profile', Icon: GardenIcon },
+  { id: 'garden',    label: 'Garden',    href: '/garden',  Icon: GardenIcon },
   { id: 'profile',   label: 'Profile',   href: '/profile', Icon: ProfileIcon },
 ]
 
