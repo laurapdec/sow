@@ -44,11 +44,6 @@ interface Resonance {
   felt: number
 }
 
-interface SeasonCard {
-  id: string
-  title: string
-  type: 'harvest' | 'soil' | 'rhythm' | 'roots' | 'kindred' | 'gifts'
-}
 
 // ─── Placeholder data ─────────────────────────────────────────────────────
 
@@ -351,7 +346,7 @@ function GardenSection({ places, readOnly = false }: { places: SavedPlace[]; rea
     <FadeIn delay={0.08}>
       <div className={`${styles.section} ${styles.card}`}>
         <h2 className={styles.sectionTitle}>Your garden</h2>
-        <p className={styles.sectionSubtext}>Places you've gathered close</p>
+        <p className={styles.sectionSubtext}>{"Places you've gathered close"}</p>
 
         {saved.length === 0 ? (
           <div className={styles.emptyState}>
@@ -461,12 +456,12 @@ function ResonanceSection({ resonances }: { resonances: Resonance[] }) {
     <FadeIn delay={0.12}>
       <div className={`${styles.section} ${styles.card}`}>
         <h2 className={styles.sectionTitle}>Your resonance</h2>
-        <p className={styles.sectionSubtext}>Words you've left behind</p>
+        <p className={styles.sectionSubtext}>{"Words you've left behind"}</p>
 
         {resonances.length === 0 ? (
           <div className={styles.emptyState}>
             <span className={styles.seedEmoji}>✍️</span>
-            <p>You haven't left any resonances yet.<br />Visit a place, feel something, share it.</p>
+            <p>{"You haven't left any resonances yet."}<br />{"Visit a place, feel something, share it."}</p>
           </div>
         ) : (
           <>
@@ -474,7 +469,7 @@ function ResonanceSection({ resonances }: { resonances: Resonance[] }) {
               {visible.map(imp => (
                 <div key={imp.id} className={styles.resonanceCard}>
                   <p className={styles.resonanceBusiness}>{imp.business}</p>
-                  <p className={styles.resonanceText}>"{imp.text}"</p>
+                  <p className={styles.resonanceText}>{'"'}{imp.text}{'"'}</p>
                   <div className={styles.resonanceMeta}>
                     <span>{imp.date}</span>
                     <span>·</span>
@@ -551,7 +546,7 @@ function SeasonsSection() {
             ))}
           </div>
           <p className={styles.seasonSubtext}>
-            "You're drawn to learning and breaking bread."
+            {`"You're drawn to learning and breaking bread."`}
           </p>
         </>
       ),
@@ -587,7 +582,7 @@ function SeasonsSection() {
               <span className={styles.seasonListCount}>7 places</span>
             </div>
           </div>
-          <p className={styles.seasonSubtext}>"Luz led you to 3 new places."</p>
+          <p className={styles.seasonSubtext}>{'"Luz led you to 3 new places."'}</p>
         </>
       ),
     },

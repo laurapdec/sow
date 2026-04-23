@@ -3,6 +3,7 @@
 import { useState, useCallback, useEffect, useMemo, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import Map, { Marker } from 'react-map-gl/mapbox'
+import type { Map as MapboxMap } from 'mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import { AnimatePresence, motion } from 'framer-motion'
 import { createBrowserClient } from '@supabase/ssr'
@@ -281,7 +282,7 @@ export default function MapClient() {
   }, [])
 
   // Warm the map style — recolor key layers to match the brand palette
-  const handleMapLoad = useCallback((e: any) => {
+  const handleMapLoad = useCallback((e: { target: MapboxMap }) => {
     const map = e.target
     const safe = (fn: () => void) => { try { fn() } catch { /* layer may not exist */ } }
 
@@ -304,7 +305,7 @@ export default function MapClient() {
     safe(() => map.setPaintProperty('building-outline', 'line-color', '#cec0aa'))
 
     const layers = map.getStyle()?.layers ?? []
-    layers.forEach((layer: any) => {
+    layers.forEach((layer: { id: string; type: string }) => {
       // Road lines
       if (
         (layer.id.startsWith('road-') || layer.id.startsWith('tunnel-') || layer.id.startsWith('bridge-')) &&
@@ -328,11 +329,15 @@ export default function MapClient() {
   }, [])
 
   const toggleIdentity = useCallback((v: string) => setActiveIdentity(prev => {
-    const n = new Set(prev); n.has(v) ? n.delete(v) : n.add(v); return n
+    const n = new Set(prev)
+    if (n.has(v)) { n.delete(v) } else { n.add(v) }
+    return n
   }), [])
 
   const toggleCategory = useCallback((v: string) => setActiveCategory(prev => {
-    const n = new Set(prev); n.has(v) ? n.delete(v) : n.add(v); return n
+    const n = new Set(prev)
+    if (n.has(v)) { n.delete(v) } else { n.add(v) }
+    return n
   }), [])
 
   const activeCount = activeIdentity.size + activeCategory.size

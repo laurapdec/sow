@@ -316,7 +316,7 @@ function PriceDisplay({ ev, large = false }: { ev: GatheringEvent; large?: boole
           </>
         )}
         {ev.hardshipWaiver && (
-          <p className={styles.hardshipNote}>Can't pay? That's okay — just show up.</p>
+          <p className={styles.hardshipNote}>{"Can't pay? That's okay — just show up."}</p>
         )}
         {ev.capacity && (
           <div className={styles.capacityRow}>
@@ -563,7 +563,7 @@ function EventDetail({
               <span className={styles.remindLabel}>
                 🔔 Remind me
               </span>
-              {reminded && <p className={styles.remindNote}>We'll nudge you the day before</p>}
+              {reminded && <p className={styles.remindNote}>{"We'll nudge you the day before"}</p>}
             </div>
             <Toggle on={reminded} onToggle={onToggleRemind} />
           </div>
@@ -593,7 +593,7 @@ function EventDetail({
         {joined ? (
           <>
             <div className={styles.rsvpJoinedBtn}>
-              <span style={{ fontSize: '1.1rem' }}>🌱</span> You're going
+              <span style={{ fontSize: '1.1rem' }}>🌱</span>{" You're going"}
             </div>
             <button className={styles.stepBackBtn} onClick={onStepBack}>
               Step back from this gathering
@@ -642,9 +642,9 @@ function ConfirmationOverlay({ onDismiss }: { onDismiss: () => void }) {
         >
           🌱
         </motion.span>
-        <h2 className={styles.confirmTitle}>You're planted</h2>
+        <h2 className={styles.confirmTitle}>{"You're planted"}</h2>
         <p className={styles.confirmSub}>
-          We'll see you there. The gathering grows with you in it.
+          {"We'll see you there. The gathering grows with you in it."}
         </p>
         <div className={styles.confirmActions}>
           <button className={styles.confirmActionBtn}>Add to calendar</button>
@@ -713,7 +713,7 @@ function PlantGathering({ onClose }: { onClose: () => void }) {
       case 2: return (
         <>
           <h2 className={styles.stepHeading}>Tell us about it</h2>
-          <p className={styles.stepSubtext}>Help people understand what they're being invited into</p>
+          <p className={styles.stepSubtext}>{"Help people understand what they're being invited into"}</p>
           <div className={styles.formGroup}>
             <label className={styles.formLabel}>Gathering name</label>
             <input
@@ -849,8 +849,8 @@ function PlantGathering({ onClose }: { onClose: () => void }) {
 
       case 4: return (
         <>
-          <h2 className={styles.stepHeading}>Who's invited?</h2>
-          <p className={styles.stepSubtext}>Set the gathering's shape and visibility</p>
+          <h2 className={styles.stepHeading}>{"Who's invited?"}</h2>
+          <p className={styles.stepSubtext}>{"Set the gathering's shape and visibility"}</p>
           <div className={styles.formGroup}>
             <label className={styles.formLabel}>Gathering size</label>
             <div className={styles.toggleRow}>
@@ -895,7 +895,7 @@ function PlantGathering({ onClose }: { onClose: () => void }) {
 
       case 5: return (
         <>
-          <h2 className={styles.stepHeading}>What's the offering?</h2>
+          <h2 className={styles.stepHeading}>{"What's the offering?"}</h2>
           <p className={styles.stepSubtext}>Be transparent about cost — and generous where you can</p>
           <div className={styles.priceTypeGrid}>
             {([
@@ -948,7 +948,7 @@ function PlantGathering({ onClose }: { onClose: () => void }) {
           {g.price !== 'free' && (
             <>
               <div className={styles.toggleRow} style={{ marginTop: 8 }}>
-                <span className={styles.toggleLabel}>Allow members to attend even if they can't pay</span>
+                <span className={styles.toggleLabel}>{"Allow members to attend even if they can't pay"}</span>
                 <Toggle on={g.hardshipWaiver} onToggle={() => set({ hardshipWaiver: !g.hardshipWaiver })} />
               </div>
               <div className={styles.formGroup} style={{ marginTop: 12 }}>
@@ -988,7 +988,7 @@ function PlantGathering({ onClose }: { onClose: () => void }) {
             </p>
             {g.description && (
               <p style={{ fontSize: '0.82rem', color: 'rgba(255,220,170,0.55)', marginTop: 10, lineHeight: 1.6 }}>
-                "{g.description.slice(0, 120)}{g.description.length > 120 ? '…' : ''}"
+                {'"'}{g.description.slice(0, 120)}{g.description.length > 120 ? '…' : ''}{'"'}
               </p>
             )}
           </div>
@@ -1087,7 +1087,7 @@ function PlantGathering({ onClose }: { onClose: () => void }) {
                 🌱
               </motion.div>
               <h2 className={styles.plantedTitle}>Your gathering is planted</h2>
-              <p className={styles.plantedSub}>It's growing. People will find it.</p>
+              <p className={styles.plantedSub}>{"It's growing. People will find it."}</p>
             </motion.div>
           </motion.div>
         )}
@@ -1166,7 +1166,7 @@ export default function EventsPage() {
       setActiveFilters(prev => {
         const next = new Set(prev)
         next.delete('all')
-        next.has(f) ? next.delete(f) : next.add(f)
+        if (next.has(f)) { next.delete(f) } else { next.add(f) }
         if (next.size === 0) next.add('all')
         return next
       })
@@ -1218,7 +1218,7 @@ export default function EventsPage() {
     if (!selectedEvent) return
     setRemindedIds(prev => {
       const n = new Set(prev)
-      n.has(selectedEvent.id) ? n.delete(selectedEvent.id) : n.add(selectedEvent.id)
+      if (n.has(selectedEvent.id)) { n.delete(selectedEvent.id) } else { n.add(selectedEvent.id) }
       return n
     })
   }
@@ -1245,7 +1245,7 @@ export default function EventsPage() {
           <div className={styles.topBarRow}>
             <div>
               <h1 className={styles.topBarTitle}>Gatherings</h1>
-              <p className={styles.topBarSubtext}>What's growing near you</p>
+              <p className={styles.topBarSubtext}>{"What's growing near you"}</p>
             </div>
             <button className={styles.plantBtn} onClick={() => setShowCreation(true)}>
               🌱 Plant a gathering
@@ -1328,7 +1328,7 @@ export default function EventsPage() {
           {todayEvents.length === 0 && thisWeekEvents.length === 0 && horizonEvents.length === 0 && (
             <div className={styles.emptyState}>
               <span className={styles.emptyIcon}>🌱</span>
-              <p>No gatherings match what you're looking for right now.<br />Try widening your search, or plant one yourself.</p>
+              <p>{"No gatherings match what you're looking for right now."}<br />{"Try widening your search, or plant one yourself."}</p>
               <button className={styles.plantBtn} onClick={() => setShowCreation(true)}>
                 Plant a gathering
               </button>
@@ -1355,7 +1355,7 @@ export default function EventsPage() {
           </div>
 
           <p className={styles.discoverySectionHead}>Popular in Bed-Stuy & Fort Greene</p>
-          <p className={styles.discoverySub}>What's growing near your roots</p>
+          <p className={styles.discoverySub}>{"What's growing near your roots"}</p>
           <div className={styles.discoveryScroll}>
             {EVENTS.filter(ev => ['Bed-Stuy', 'Fort Greene'].includes(ev.neighborhood)).map(ev => (
               <div key={ev.id} className={styles.discoveryCard} onClick={() => setSelectedEvent(ev)}>

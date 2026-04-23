@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { AnimatePresence, motion } from 'framer-motion'
 import { createBrowserClient } from '@supabase/ssr'
@@ -353,7 +353,7 @@ function ExchangeEntry({ exchange }: { exchange: Exchange }) {
               exit={{ height: 0, opacity: 0 }}
               transition={{ duration: 0.2 }}
             >
-              "{exchange.gratitudeNote}"
+              {'"'}{exchange.gratitudeNote}{'"'}
             </motion.blockquote>
           )}
         </AnimatePresence>

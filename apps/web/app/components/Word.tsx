@@ -22,7 +22,7 @@ export default function Word({ upper, lower, phase, index, targetPositions }: Pr
     }
   }, []);
 
-  const deltaX = targetPositions[index] - startX;
+  const deltaX = (targetPositions[index] ?? 0) - startX;
 
   return (
     <motion.span

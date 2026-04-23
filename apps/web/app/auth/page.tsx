@@ -335,7 +335,7 @@ export default function AuthPage() {
             src="/seedling.webp"
             alt=""
             className={styles.seedlingDecor}
-            style={{ left: `${left}%`, height: `${44 + seedlingOffsets[i] * 10}px` }}
+            style={{ left: `${left}%`, height: `${44 + (seedlingOffsets[i] ?? 0) * 10}px` }}
           />
         ))}
       </div>

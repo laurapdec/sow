@@ -101,8 +101,7 @@ export default function NeighborhoodPromptModal({ hasNeighborhoods, onSave }: Pr
             <>
               <h2 className={styles.heading}>Where do your roots thrive?</h2>
               <p className={styles.subtext}>
-                Choosing a neighborhood helps us show you what's growing nearby.
-                You can always change this — roots are meant to spread.
+                {"Choosing a neighborhood helps us show you what's growing nearby. You can always change this — roots are meant to spread."}
               </p>
 
               <div className={styles.searchWrap} ref={wrapRef}>
@@ -152,7 +151,7 @@ export default function NeighborhoodPromptModal({ hasNeighborhoods, onSave }: Pr
                   Plant my roots
                 </button>
                 <button className={styles.dismissBtn} onClick={dismiss}>
-                  I'll explore first
+                  {"I'll explore first"}
                 </button>
               </div>
             </>

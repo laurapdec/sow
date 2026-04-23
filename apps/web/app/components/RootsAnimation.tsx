@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useMemo } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { getNeighborhoodPosition } from '@/lib/neighborhoods'
 import styles from './RootsAnimation.module.css'
 
@@ -64,7 +64,6 @@ function makeConnectionPath(
   [x1, y1]: [number, number],
   [x2, y2]: [number, number]
 ): string {
-  const mx = (x1 + x2) / 2
   const my = Math.max(y1, y2) + 42
   return `M ${x1} ${y1+50} C ${x1+10} ${my} ${x2-10} ${my} ${x2} ${y2+50}`
 }

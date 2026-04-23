@@ -406,8 +406,7 @@ function ReachOutModal({
             />
             <label className={styles.modalLabel}>What you can offer in return (optional)</label>
             <p className={styles.modalRecipNote}>
-              Reciprocity makes the community stronger. Is there anything you'd like to offer in return?
-              No pressure — giving freely is beautiful too.
+              {"Reciprocity makes the community stronger. Is there anything you'd like to offer in return? No pressure — giving freely is beautiful too."}
             </p>
             <textarea
               className={styles.modalInput}
@@ -487,7 +486,7 @@ function OfferingDetail({
           {item.alsoSeeking && (
             <div className={styles.detailAlsoSeeking}>
               <p className={styles.detailAlsoSeekingLabel}>Also seeking</p>
-              <p className={styles.detailAlsoSeekingText}>"{item.alsoSeeking}"</p>
+              <p className={styles.detailAlsoSeekingText}>{'"'}{item.alsoSeeking}{'"'}</p>
             </div>
           )}
           {item.canOffer && (
@@ -543,7 +542,7 @@ function OfferingDetail({
             <p className={styles.detailSectionLabel}>Gratitude</p>
             {item.gratitude.map((g, i) => (
               <div key={i} className={styles.gratitudeCard}>
-                <p className={styles.gratitudeText}>"{g.text}"</p>
+                <p className={styles.gratitudeText}>{'"'}{g.text}{'"'}</p>
                 <p className={styles.gratitudeMeta}>{g.from} · {g.date}</p>
               </div>
             ))}
@@ -643,7 +642,7 @@ function CreateFlow({
       case 2: return (
         <>
           <h2 className={styles.stepHeading}>Tell us about your gift</h2>
-          <p className={styles.stepSub}>Help your community understand what you're offering</p>
+          <p className={styles.stepSub}>{"Help your community understand what you're offering"}</p>
           <div className={styles.formGroup}>
             <label className={styles.formLabel}>Offering name</label>
             <input className={styles.formInput} placeholder="e.g. Dominican cooking lesson, One hour of garden help"
@@ -714,7 +713,7 @@ function CreateFlow({
           <h2 className={styles.stepHeading}>What are you seeking?</h2>
           <p className={styles.stepSub}>Reciprocity makes the community stronger. Is there anything you need?</p>
           <div className={styles.toggleRow}>
-            <span className={styles.toggleLabel}>I'm also seeking something</span>
+            <span className={styles.toggleLabel}>{"I'm also seeking something"}</span>
             <Toggle on={g.alsoSeeking} onToggle={() => set({ alsoSeeking: !g.alsoSeeking })} />
           </div>
           {g.alsoSeeking && (
@@ -774,7 +773,7 @@ function CreateFlow({
             </p>
             {g.description && (
               <p style={{ fontSize: '0.82rem', color: 'rgba(255,220,170,0.55)', marginTop: 10, lineHeight: 1.6 }}>
-                "{g.description.slice(0, 120)}{g.description.length > 120 ? '…' : ''}"
+                {'"'}{g.description.slice(0, 120)}{g.description.length > 120 ? '…' : ''}{'"'}
               </p>
             )}
             {g.alsoSeeking && g.seekTitle && (
@@ -799,7 +798,7 @@ function CreateFlow({
       case 1: return (
         <>
           <h2 className={styles.stepHeading}>What are you seeking?</h2>
-          <p className={styles.stepSub}>Choose what you're looking for</p>
+          <p className={styles.stepSub}>{"Choose what you're looking for"}</p>
           <div className={styles.typeGrid}>
             {CATEGORIES.map(c => (
               <button key={c.value} type="button"
@@ -820,7 +819,7 @@ function CreateFlow({
           <h2 className={styles.stepHeading}>Tell us what you need</h2>
           <p className={styles.stepSub}>Be honest — your community wants to help</p>
           <div className={styles.formGroup}>
-            <label className={styles.formLabel}>What you're seeking</label>
+            <label className={styles.formLabel}>{"What you're seeking"}</label>
             <input className={styles.formInput}
               placeholder="e.g. Spanish conversation partner, help moving a bookshelf"
               value={g.title} onChange={e => set({ title: e.target.value })} />
@@ -849,7 +848,7 @@ function CreateFlow({
               value={g.seekDesc} onChange={e => set({ seekDesc: e.target.value })} />
           </div>
           <button className={styles.skipBtn} onClick={() => setStep(v => v + 1)}>
-            Skip — I'm just here to receive right now
+            {"Skip — I'm just here to receive right now"}
           </button>
         </>
       )
@@ -866,7 +865,7 @@ function CreateFlow({
             )}
             {g.description && (
               <p style={{ fontSize: '0.82rem', color: 'rgba(255,220,170,0.55)', marginTop: 10, lineHeight: 1.6 }}>
-                "{g.description.slice(0, 120)}{g.description.length > 120 ? '…' : ''}"
+                {'"'}{g.description.slice(0, 120)}{g.description.length > 120 ? '…' : ''}{'"'}
               </p>
             )}
             {g.seekDesc && (
@@ -879,7 +878,7 @@ function CreateFlow({
             style={{ width: '100%', marginTop: 20, padding: '16px' }}
             onClick={handlePlant}
           >
-            🌑 Share what you're seeking
+            {"🌑 Share what you're seeking"}
           </button>
         </>
       )
@@ -987,7 +986,7 @@ export default function OfferingsPage() {
     if (f === 'all') { setActiveFilters(new Set(['all'])); return }
     setActiveFilters(prev => {
       const next = new Set(prev); next.delete('all')
-      next.has(f) ? next.delete(f) : next.add(f)
+      if (next.has(f)) { next.delete(f) } else { next.add(f) }
       if (next.size === 0) next.add('all')
       return next
     })
@@ -995,7 +994,9 @@ export default function OfferingsPage() {
 
   const toggleSave = (id: string) => {
     setSavedIds(prev => {
-      const n = new Set(prev); n.has(id) ? n.delete(id) : n.add(id); return n
+      const n = new Set(prev)
+      if (n.has(id)) { n.delete(id) } else { n.add(id) }
+      return n
     })
   }
 
