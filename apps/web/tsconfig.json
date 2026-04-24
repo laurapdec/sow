@@ -8,7 +8,7 @@
     ],
     "strictNullChecks": true,
     "baseUrl": ".",
-    "paths": { "@/*": ["./*"] }
+    "paths": { "@/*": ["./app/*"] }
   },
   "include": [
     "**/*.ts",

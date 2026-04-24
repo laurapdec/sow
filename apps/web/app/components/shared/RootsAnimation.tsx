@@ -39,20 +39,17 @@ const BOROUGH_PATHS = [
 // ── Root path generation ───────────────────────────────────────────────────
 
 function makeRootPaths(x: number, y: number, i: number): string[] {
-  const s = (i * 7) % 14 - 7 // variation offset per neighborhood
+  const s = (i * 7) % 14 - 7
   return [
-    // Main taproot
     `M ${x} ${y+3} C ${x+s-2} ${y+18} ${x+s-8} ${y+34} ${x+s-5} ${y+50} C ${x+s-2} ${y+62} ${x+s+5} ${y+68} ${x+s+2} ${y+78}`,
-    // Left lateral
     `M ${x+s-5} ${y+34} C ${x+s-18} ${y+42} ${x+s-28} ${y+40} ${x+s-33} ${y+52}`,
-    // Right lateral
     `M ${x+s-5} ${y+34} C ${x+s+8} ${y+46} ${x+s+18} ${y+50} ${x+s+15} ${y+62}`,
   ]
 }
 
 function makeSproutPaths(x: number, y: number): { stem: string; lLeaf: string; rLeaf: string } {
   return {
-    stem: `M ${x} ${y-3} L ${x} ${y-24}`,
+    stem:  `M ${x} ${y-3} L ${x} ${y-24}`,
     lLeaf: `M ${x} ${y-15} C ${x-10} ${y-28} ${x-16} ${y-19} ${x-9} ${y-12}`,
     rLeaf: `M ${x} ${y-15} C ${x+10} ${y-28} ${x+16} ${y-19} ${x+9} ${y-12}`,
   }
@@ -88,7 +85,6 @@ export default function RootsAnimation({
   existingNeighborhoods = [],
   context = 'post-signup',
 }: RootsAnimationProps) {
-  // Compute positions for new neighborhoods
   const newPositions = useMemo(
     () => neighborhoods.map((n, i) => ({ name: n, pos: getNeighborhoodPosition(n, i) })),
     [neighborhoods]
@@ -99,7 +95,6 @@ export default function RootsAnimation({
   )
   const allPositions = [...existingPositions, ...newPositions]
 
-  // Auto-complete for full-screen
   useEffect(() => {
     if (variant !== 'full-screen') return
     const t = setTimeout(() => onComplete?.(), 4200)
@@ -110,12 +105,7 @@ export default function RootsAnimation({
   const heading = getHeading(context)
 
   const svg = (
-    <svg
-      viewBox="0 0 280 260"
-      className={styles.svg}
-      aria-hidden="true"
-    >
-      {/* Borough outlines */}
+    <svg viewBox="0 0 280 260" className={styles.svg} aria-hidden="true">
       {BOROUGH_PATHS.map((d, i) => (
         <motion.path
           key={i}
@@ -131,7 +121,6 @@ export default function RootsAnimation({
         />
       ))}
 
-      {/* Existing neighborhood roots (faint, pre-drawn) */}
       {existingPositions.map(({ pos }, i) => {
         const paths = makeRootPaths(pos[0], pos[1], i)
         return paths.map((d, pi) => (
@@ -148,7 +137,6 @@ export default function RootsAnimation({
         ))
       })}
 
-      {/* Underground connections between all neighborhoods */}
       {allPositions.length > 1 && allPositions.slice(0, -1).map((a, i) =>
         allPositions.slice(i + 1).map((b, j) => (
           <motion.path
@@ -165,7 +153,6 @@ export default function RootsAnimation({
         ))
       )}
 
-      {/* New neighborhood seeds + roots + sprouts */}
       {newPositions.map(({ pos }, i) => {
         const [x, y] = pos
         const rootPaths = makeRootPaths(x, y, i)
@@ -175,7 +162,6 @@ export default function RootsAnimation({
 
         return (
           <g key={`n-${i}`}>
-            {/* Seed glow */}
             <motion.circle
               cx={x} cy={y} r={8}
               fill="rgba(201,168,76,0.18)"
@@ -183,7 +169,6 @@ export default function RootsAnimation({
               animate={{ scale: 1, opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.7 + i * 0.1, ease: 'backOut' }}
             />
-            {/* Seed */}
             <motion.circle
               cx={x} cy={y} r={3.5}
               fill="#b87333"
@@ -191,7 +176,6 @@ export default function RootsAnimation({
               animate={{ scale: 1 }}
               transition={{ duration: 0.4, delay: 0.72 + i * 0.1, ease: 'backOut' }}
             />
-            {/* Roots */}
             {rootPaths.map((d, pi) => (
               <motion.path
                 key={pi}
@@ -205,7 +189,6 @@ export default function RootsAnimation({
                 transition={{ duration: pi === 0 ? 1.4 : 0.9, delay: rootDelay + pi * 0.2, ease: 'easeInOut' }}
               />
             ))}
-            {/* Stem */}
             <motion.path
               d={stem}
               fill="none"
@@ -216,7 +199,6 @@ export default function RootsAnimation({
               animate={{ pathLength: 1 }}
               transition={{ duration: 0.55, delay: sproutDelay, ease: 'easeOut' }}
             />
-            {/* Left leaf */}
             <motion.path
               d={lLeaf}
               fill="rgba(109,138,90,0.45)"
@@ -227,7 +209,6 @@ export default function RootsAnimation({
               animate={{ pathLength: 1, opacity: 1 }}
               transition={{ duration: 0.4, delay: sproutDelay + 0.45, ease: 'easeOut' }}
             />
-            {/* Right leaf */}
             <motion.path
               d={rLeaf}
               fill="rgba(109,138,90,0.45)"
@@ -278,6 +259,5 @@ export default function RootsAnimation({
     return <div className={styles.inlineWrap}>{inner}</div>
   }
 
-  // modal variant: just the inner content, container handled by parent
   return <div className={styles.modalWrap}>{inner}</div>
 }

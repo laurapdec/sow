@@ -1,8 +1,9 @@
-'use client';
-import { useMemo } from 'react';
-import styles from '../page.module.css';
+'use client'
 
-const DROP_COUNT = 45;
+import { useMemo } from 'react'
+import styles from './Rain.module.css'
+
+const DROP_COUNT = 45
 
 export default function Rain() {
   const drops = useMemo(
@@ -16,7 +17,7 @@ export default function Rain() {
         height: 12 + Math.random() * 16,
       })),
     []
-  );
+  )
 
   return (
     <div className={styles.rain}>
@@ -34,5 +35,5 @@ export default function Rain() {
         />
       ))}
     </div>
-  );
+  )
 }

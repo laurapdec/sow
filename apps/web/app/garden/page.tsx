@@ -3,8 +3,8 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { AnimatePresence, motion } from 'framer-motion'
-import { createBrowserClient } from '@supabase/ssr'
-import BottomNav from '@/app/components/BottomNav'
+import { getSupabaseClient } from '@/services/supabase/client'
+import BottomNav from '@/components/layout/BottomNav'
 import styles from './garden.module.css'
 
 // ─── Types ────────────────────────────────────────────────────────────────
@@ -517,10 +517,10 @@ function ReciprocityPortrait({
         {given === 0 && received === 0
           ? 'Your reciprocity story begins with a first exchange.'
           : given > received
-          ? 'You give freely. This community is nourished by you.'
+          ? 'You give freely. Your community is nourished by you.'
           : received > given
-          ? 'You\'ve received generously. When you\'re ready, the circle continues.'
-          : 'A balanced rhythm — giving and receiving in kind.'}
+          ? 'You\'ve received generously. Rejoice in the abundance that surrounds your community.'
+          : 'You give and receive in balance. You are in rhythm with the flow of this community.'}
       </p>
     </div>
   )
@@ -535,10 +535,7 @@ export default function GardenPage() {
   const [activeTab, setActiveTab] = useState<'exchanges' | 'saved'>('exchanges')
 
   useEffect(() => {
-    const supabase = createBrowserClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    )
+    const supabase = getSupabaseClient()
     supabase.auth.getSession().then(({ data }) => {
       if (!data.session) router.push('/auth')
       else setAuthChecked(true)
@@ -573,7 +570,7 @@ export default function GardenPage() {
         {/* ── Section 1: Your active offerings ── */}
         <section className={styles.section}>
           <div className={styles.sectionHeader}>
-            <h2 className={styles.sectionTitle}>Growing</h2>
+            <h2 className={styles.sectionTitle}>Planting</h2>
             <span className={styles.sectionCount}>{offerings.filter(o => o.status === 'active').length} active</span>
           </div>
           <p className={styles.sectionSub}>Your offerings in the community</p>
@@ -594,10 +591,10 @@ export default function GardenPage() {
         {/* ── Section 2: Active seekings ── */}
         <section className={styles.section}>
           <div className={styles.sectionHeader}>
-            <h2 className={styles.sectionTitle}>Seeking</h2>
+            <h2 className={styles.sectionTitle}>Harvesting</h2>
             <span className={styles.sectionCount}>{MY_SEEKINGS.filter(s => s.status === 'active').length} active</span>
           </div>
-          <p className={styles.sectionSub}>What you&apos;ve asked for from the community</p>
+          <p className={styles.sectionSub}>Which of your needs could the community fulfill?</p>
           <div className={styles.cardList}>
             {MY_SEEKINGS.map(s => (
               <MySeekingCard key={s.id} seeking={s} />
@@ -674,7 +671,7 @@ export default function GardenPage() {
             <h2 className={styles.sectionTitle}>Reciprocity portrait</h2>
           </div>
           <p className={styles.sectionSub}>
-            Not accounting — just a picture of how you move through this community
+            The ebb and flow is part of aligning with the earth's rhythms. Understand which season you're in.
           </p>
           <ReciprocityPortrait given={givenCount} received={receivedCount} />
         </section>

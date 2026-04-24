@@ -1,50 +1,73 @@
+/* ── Design tokens ──────────────────────────────────────────────────────── */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Brand colours */
+  --color-background:    #802f1f;
+  --color-copper:        #b87333;
+  --color-copper-hover:  #c9843f;
+  --color-gold:          #c9a84c;
+  --color-gold-hover:    #d4b660;
+  --color-gold-star:     #f5c842;
+  --color-cream:         #f5e6d3;
+  --color-deep-dark:     #3a1a08;
+  --color-dark-bg:       #5a1f10;
+  --color-seedling:      #6d8a5a;
+  --color-error:         #e07a5f;
+
+  /* Semantic text */
+  --text-primary:   rgba(255, 220, 170, 0.95);
+  --text-secondary: rgba(255, 220, 170, 0.7);
+  --text-muted:     rgba(255, 220, 170, 0.45);
+  --text-hint:      rgba(255, 220, 170, 0.28);
+
+  /* Glass surfaces */
+  --glass-card-bg:      rgba(255, 255, 255, 0.06);
+  --glass-card-border:  rgba(184, 115, 51, 0.25);
+  --glass-input-bg:     rgba(255, 255, 255, 0.07);
+  --glass-input-border: rgba(184, 115, 51, 0.35);
+  --glass-nav-bg:       rgba(88, 28, 14, 0.94);
+  --glass-modal-bg:     rgba(88, 28, 14, 0.96);
+  --glass-backdrop:     rgba(60, 18, 8, 0.65);
+  --glass-blur-sm:      4px;
+  --glass-blur-md:      16px;
+  --glass-blur-lg:      18px;
+
+  /* Typography */
+  --font-display: var(--font-catchy-mager, 'CatchyMager', sans-serif);
+  --font-body:    system-ui, -apple-system, sans-serif;
+
+  /* Radii */
+  --radius-sm:  8px;
+  --radius-md:  10px;
+  --radius-lg:  12px;
+  --radius-xl:  16px;
+  --radius-xxl: 20px;
+
+  /* Z-index scale */
+  --z-nav:     30;
+  --z-modal:   80;
+  --z-overlay: 100;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-html,
-body {
-  max-width: 100vw;
-  overflow-x: hidden;
-}
-
-body {
-  color: var(--foreground);
-  background: var(--background);
-}
-
-* {
+/* ── Global reset ──────────────────────────────────────────────────────── */
+*, *::before, *::after {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
 }
 
+html, body {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+body {
+  background: var(--color-background);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
 a {
   color: inherit;
   text-decoration: none;
-}
-
-.imgDark {
-  display: none;
-}
-
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
-
-  .imgLight {
-    display: none;
-  }
-  .imgDark {
-    display: unset;
-  }
 }

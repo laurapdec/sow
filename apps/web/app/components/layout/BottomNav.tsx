@@ -54,11 +54,11 @@ function ProfileIcon() {
 }
 
 const NAV_ITEMS = [
-  { id: 'map',       label: 'Map',       href: '/map',     Icon: MapIcon },
-  { id: 'events',    label: 'Events',    href: '/events',  Icon: EventsIcon },
+  { id: 'map',       label: 'Map',       href: '/map',       Icon: MapIcon },
+  { id: 'events',    label: 'Events',    href: '/events',    Icon: EventsIcon },
   { id: 'offerings', label: 'Offerings', href: '/offerings', Icon: OfferingsIcon },
-  { id: 'garden',    label: 'Garden',    href: '/garden',  Icon: GardenIcon },
-  { id: 'profile',   label: 'Profile',   href: '/profile', Icon: ProfileIcon },
+  { id: 'garden',    label: 'Garden',    href: '/garden',    Icon: GardenIcon },
+  { id: 'profile',   label: 'Profile',   href: '/profile',   Icon: ProfileIcon },
 ]
 
 export default function BottomNav({ active }: { active: string }) {

@@ -3,8 +3,8 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { AnimatePresence, motion } from 'framer-motion'
-import { createBrowserClient } from '@supabase/ssr'
-import BottomNav from '@/app/components/BottomNav'
+import { getSupabaseClient } from '@/services/supabase/client'
+import BottomNav from '@/components/layout/BottomNav'
 import styles from './events.module.css'
 
 // ─── Types ────────────────────────────────────────────────────────────────
@@ -264,12 +264,6 @@ function priceClass(ev: GatheringEvent, s: typeof styles) {
   return s.priceTag
 }
 
-function getSupabase() {
-  return createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  )
-}
 
 // ─── Small shared components ───────────────────────────────────────────────
 
@@ -1153,7 +1147,7 @@ export default function EventsPage() {
   const [showCreation, setShowCreation] = useState(false)
 
   useEffect(() => {
-    getSupabase().auth.getUser().then(({ data }) => {
+    getSupabaseClient().auth.getUser().then(({ data }) => {
       if (!data.user) router.push('/auth')
       else setLoading(false)
     })

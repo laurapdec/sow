@@ -1,83 +1,10 @@
 'use client';
 
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { createBrowserClient } from '@supabase/ssr';
+import { getSupabaseClient } from '@/services/supabase/client';
+import { NEIGHBORHOODS } from '@/lib/neighborhoods';
 import styles from './auth.module.css';
 
-function getSupabase() {
-  return createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  );
-}
-
-const NEIGHBORHOODS = Array.from(new Set([
-  'Allerton', 'Annadale', 'Arden Heights', 'Arlington', 'Arrochar', 'Arverne',
-  'Astoria', 'Astoria Heights', 'Auburndale', 'Bath Beach', 'Bathgate',
-  'Bay Ridge', 'Bay Terrace', 'Baychester', 'Bayside', 'Bayswater',
-  'Bedford Park', 'Bedford Stuyvesant', 'Beechhurst', 'Beekman Place',
-  'Belle Harbor', 'Bellaire', 'Bellerose', 'Belmont', 'Bensonhurst',
-  'Bergen Beach', 'Blissville', 'Bloomfield', 'Boerum Hill', 'Borough Park',
-  'Breezy Point', 'Briarwood', 'Brighton Beach', 'Broad Channel', 'Broadway Junction',
-  'Bronx Park South', 'Bronx River', 'Bronxdale', 'Brooklyn Heights', 'Brookville',
-  'Brownsville', 'Bulls Head', 'Bushwick', 'Butler Manor', 'Cambria Heights',
-  'Canarsie', 'Carnegie Hill', 'Carroll Gardens', 'Castle Hill', 'Castleton Corners',
-  'Charleston', 'Chelsea', 'Chinatown', 'City Island', 'City Line',
-  'Civic Center', 'Claremont Village', 'Clason Point', 'Clearview', 'Clifton',
-  'Clinton', 'Clinton Hill', 'Co-op City', 'Cobble Hill', 'College Point',
-  'Concord', 'Concourse', 'Concourse Village', 'Coney Island', 'Country Club',
-  'Crown Heights', 'Cypress Hills', 'Ditmas Park', 'Dongan Hills', 'Douglaston',
-  'Downtown', 'DUMBO', 'Dutch Kills', 'Dyker Heights', 'East Elmhurst',
-  'East Flatbush', 'East Harlem', 'East New York', 'East Tremont', 'East Village',
-  'East Williamsburg', 'Eastchester', 'Edenwald', 'Edgemere', 'Edgewater Park',
-  'Egbertville', 'Elm Park', 'Elmhurst', 'Eltingville', 'Emerson Hill',
-  'Far Rockaway', 'Farragut', 'Fieldston', 'Financial District', 'Flatbush',
-  'Flatlands', 'Flatiron', 'Floral Park', 'Flushing', 'Flushing (Downtown)',
-  'Fordham', 'Forest Hills', 'Forest Hills Gardens', 'Fort Greene', 'Fort Hamilton',
-  'Fox Hills', 'Fresh Meadows', 'Fulton Ferry', 'Georgetown', 'Gerritsen Beach',
-  'Glen Oaks', 'Glendale', 'Gramercy', 'Graniteville', 'Grasmere',
-  'Grant City', 'Gravesend', 'Great Kills', 'Greenpoint', 'Greenridge',
-  'Greenwich Village', 'Grymes Hill', 'Hamilton Heights', 'Hammels', 'Harlem (Central)',
-  'Heartland Village', 'Herald Square', 'High Bridge', 'Highland Park', 'Hillcrest',
-  'Hollis', 'Holliswood', 'Homecrest', 'Howard Beach', 'Howland Hook',
-  'Hudson Square', 'Huguenot', 'Hunters Point', 'Hunts Point', 'Inwood',
-  'Jackson Heights', 'Jamaica', 'Jamaica Center', 'Jamaica Estates', 'Jamaica Hills',
-  'Kensington', 'Kew Gardens', 'Kew Gardens Hills', 'Kings Highway', 'Kingsbridge',
-  'Kingsbridge Heights', 'Laurelton', 'Lefrak City', 'Lenox Hill', 'Lighthouse Hill',
-  'Lincoln Square', 'Lindenwood', 'Little Italy', 'Little Neck', 'Livingston',
-  'Long Island City', 'Longwood', 'Lower East Side', 'Malba', 'Manhattan Beach',
-  'Manhattan Terrace', 'Manhattan Valley', 'Manhattanville', 'Manor Heights', 'Mapleton',
-  'Marble Hill', "Mariner's Harbor", 'Marine Park', 'Maspeth', 'Melrose',
-  'Middle Village', 'Midland Beach', 'Midtown', 'Midtown South', 'Midwood',
-  'Mill Basin', 'Mill Island', 'Morningside Heights', 'Morris Heights', 'Morris Park',
-  'Morrisania', 'Mott Haven', 'Mount Eden', 'Mount Hope', 'Murray Hill',
-  'Navy Yard', 'Neponsit', 'New Brighton', 'New Dorp', 'New Dorp Beach',
-  'New Hyde Park', 'New Lots', 'New Springville', 'NoHo', 'Norwood',
-  'North Corona', 'North Riverdale', 'North Side', 'Oakland Gardens', 'Oakwood',
-  'Ocean Hill', 'Ocean Parkway', 'Old Place', 'Old Town', 'Olinville',
-  'Ozone Park', 'Paerdegat Basin', 'Park Hill', 'Park Slope', 'Parkchester',
-  'Pelham Bay', 'Pelham Gardens', 'Pelham Parkway', 'Pleasant Plains', 'Plum Beach',
-  'Pomonok', 'Port Ivory', 'Port Morris', 'Port Richmond', "Prince's Bay",
-  'Prospect Heights', 'Prospect Lefferts Gardens', 'Prospect Park South',
-  'Queens Village', 'Queensboro Hill', 'Randall Manor', 'Ravenswood', 'Red Hook',
-  'Rego Park', 'Remsen Village', 'Richmond Hill', 'Richmond Town', 'Richmond Valley',
-  'Ridgewood', 'Riverdale', 'Rochdale', 'Rockaway Park', 'Roosevelt Island',
-  'Rosebank', 'Rosedale', 'Rossville', 'Roxbury', 'Rugby', 'Sandy Ground',
-  'Schuylerville', 'Sea Gate', 'Seaside', 'Sheepshead Bay', 'Shore Acres',
-  'Silver Lake', 'SoHo', 'Somerville', 'Soundview', 'South Beach',
-  'South Corona', 'South Jamaica', 'South Ozone Park', 'South Side', 'South Village',
-  'Spring Creek', 'Springfield Gardens', 'Spuyten Duyvil', 'St. Albans', 'St. George',
-  'Stapleton', 'Starrett City', 'Steinway', 'Stuyvesant Heights', 'Stuyvesant Town',
-  'Sunnyside', 'Sunnyside Gardens', 'Sunset Park', 'Sutton Place', 'Throgs Neck',
-  'Times Square', 'Todt Hill', 'Tompkins Park North', 'Tompkinsville', 'Tottenville',
-  'Travis', 'Tribeca', 'Tudor City', 'Turtle Bay', 'Union Square',
-  'Unionport', 'University Heights', 'Upper East Side', 'Upper West Side', 'Utopia',
-  'Van Nest', 'Vinegar Hill', 'Wakefield', 'Wall Street', 'Ward Hill',
-  'Washington Heights', 'Weeksville', 'West Brighton', 'West Farms', 'West Village',
-  'Westchester Square', 'Westerleigh', 'Whitestone', 'Williamsbridge', 'Williamsburg',
-  'Willowbrook', 'Windsor Terrace', 'Wingate', 'Woodhaven', 'Woodlawn',
-  'Woodrow', 'Woodside', 'Yorkville',
-])).sort();
 
 const STARS = [
   { top: '8%',  left: '12%', delay: '0s',   size: 6 },
@@ -149,7 +76,7 @@ export default function AuthPage() {
 
     setLoading(true);
     try {
-      const supabase = getSupabase();
+      const supabase = getSupabaseClient();
       const { error } = await supabase.auth.signInWithOtp({
         email,
         options: {
@@ -165,7 +92,7 @@ export default function AuthPage() {
   };
 
   const signInWithGoogle = async () => {
-    const supabase = getSupabase();
+    const supabase = getSupabaseClient();
     await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: { redirectTo: `${location.origin}/auth/callback` },

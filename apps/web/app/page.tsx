@@ -2,9 +2,9 @@
 
 import { useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import Word from './components/Word';
-import Rain from './components/Rain';
-import SeedlingImg from './components/SeedlingImg';
+import Word from './components/splash/Word';
+import Rain from './components/splash/Rain';
+import SeedlingImg from './components/splash/SeedlingImg';
 import styles from './page.module.css';
 
 export default function LoadingScreen() {

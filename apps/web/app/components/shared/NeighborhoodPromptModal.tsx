@@ -3,10 +3,9 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { NEIGHBORHOODS } from '@/lib/neighborhoods'
+import { NEIGHBORHOOD_PROMPT_DISMISSED_KEY } from '@/lib/constants'
 import RootsAnimation from './RootsAnimation'
 import styles from './NeighborhoodPromptModal.module.css'
-
-const DISMISSED_KEY = 'sow_neighborhood_prompt_dismissed'
 
 interface Props {
   hasNeighborhoods: boolean
@@ -23,7 +22,7 @@ export default function NeighborhoodPromptModal({ hasNeighborhoods, onSave }: Pr
 
   useEffect(() => {
     if (hasNeighborhoods) return
-    const dismissed = localStorage.getItem(DISMISSED_KEY)
+    const dismissed = localStorage.getItem(NEIGHBORHOOD_PROMPT_DISMISSED_KEY)
     if (!dismissed) setVisible(true)
   }, [hasNeighborhoods])
 
@@ -48,7 +47,7 @@ export default function NeighborhoodPromptModal({ hasNeighborhoods, onSave }: Pr
   }
 
   const dismiss = () => {
-    localStorage.setItem(DISMISSED_KEY, '1')
+    localStorage.setItem(NEIGHBORHOOD_PROMPT_DISMISSED_KEY, '1')
     setVisible(false)
   }
 

@@ -3,10 +3,10 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { AnimatePresence, motion } from 'framer-motion'
-import { createBrowserClient } from '@supabase/ssr'
+import { getSupabaseClient } from '@/services/supabase/client'
 import { NEIGHBORHOODS } from '@/lib/neighborhoods'
-import BottomNav from '@/app/components/BottomNav'
-import RootsAnimation from '@/app/components/RootsAnimation'
+import BottomNav from '@/components/layout/BottomNav'
+import RootsAnimation from '@/components/shared/RootsAnimation'
 import styles from './profile.module.css'
 
 // ─── Types ────────────────────────────────────────────────────────────────
@@ -91,12 +91,6 @@ const IDENTITY_LABELS: Record<string, string> = {
   'cooperative': 'Cooperative', 'worker-owned': 'Worker-owned',
 }
 
-function getSupabase() {
-  return createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  )
-}
 
 // ─── Fade-in wrapper ──────────────────────────────────────────────────────
 
@@ -783,14 +777,14 @@ export default function ProfilePage() {
   const [viewingKindred, setViewingKindred] = useState<KindredMember | null>(null)
 
   useEffect(() => {
-    getSupabase().auth.getUser().then(({ data }) => {
+    getSupabaseClient().auth.getUser().then(({ data }) => {
       if (!data.user) router.push('/auth')
       else setLoading(false)
     })
   }, [router])
 
   const handleLogout = useCallback(async () => {
-    await getSupabase().auth.signOut()
+    await getSupabaseClient().auth.signOut()
     router.push('/auth')
   }, [router])
 

@@ -6,7 +6,7 @@ import Map, { Marker } from 'react-map-gl/mapbox'
 import type { Map as MapboxMap } from 'mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import { AnimatePresence, motion } from 'framer-motion'
-import { createBrowserClient } from '@supabase/ssr'
+import { getSupabaseClient } from '@/services/supabase/client'
 import styles from './map.module.css'
 
 // ─── Types ─────────────────────────────────────────────────────────────────
@@ -237,14 +237,6 @@ function ProfileIcon() {
   )
 }
 
-// ─── Supabase helper ──────────────────────────────────────────────────────────
-
-function getSupabase() {
-  return createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  )
-}
 
 // ─── Main component ───────────────────────────────────────────────────────────
 
@@ -271,7 +263,7 @@ export default function MapClient() {
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
-    const sb = getSupabase()
+    const sb = getSupabaseClient()
     sb.auth.getUser().then(({ data }) => {
       setUserId(data.user?.id ?? null)
       setUserName(data.user?.user_metadata?.name ?? null)
@@ -366,7 +358,7 @@ export default function MapClient() {
   const savePlace = async () => {
     if (!pending || !pendingName.trim()) return
     setSaving(true)
-    const sb = getSupabase()
+    const sb = getSupabaseClient()
     const { data: { user } } = await sb.auth.getUser()
     if (!user) { setSaving(false); return }
     const { data, error } = await sb.from('places').insert({
@@ -382,7 +374,7 @@ export default function MapClient() {
 
   const deletePlace = async (b: Business) => {
     if (!confirm(`Remove "${b.name}"?`)) return
-    const { error } = await getSupabase().from('places').delete().eq('id', b.id)
+    const { error } = await getSupabaseClient().from('places').delete().eq('id', b.id)
     if (!error) { setPlaces(prev => prev.filter(p => p.id !== b.id)); setSelected(null) }
   }
 

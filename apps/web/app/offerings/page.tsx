@@ -3,8 +3,8 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { AnimatePresence, motion } from 'framer-motion'
-import { createBrowserClient } from '@supabase/ssr'
-import BottomNav from '@/app/components/BottomNav'
+import { getSupabaseClient } from '@/services/supabase/client'
+import BottomNav from '@/components/layout/BottomNav'
 import styles from './offerings.module.css'
 
 // ─── Types ────────────────────────────────────────────────────────────────
@@ -212,12 +212,6 @@ const SEEKINGS: Offering[] = [
   },
 ]
 
-function getSupabase() {
-  return createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  )
-}
 
 // ─── Fade-in wrapper ──────────────────────────────────────────────────────
 
@@ -976,8 +970,8 @@ export default function OfferingsPage() {
   const [creationMode, setCreationMode] = useState<'offering' | 'seeking' | null>(null)
 
   useEffect(() => {
-    getSupabase().auth.getUser().then(({ data }) => {
-      if (!data.user) router.push('/auth')
+    getSupabaseClient().auth.getUser().then(({ data: { user } }) => {
+      if (!user) router.push('/auth')
       else setLoading(false)
     })
   }, [router])
@@ -1042,11 +1036,11 @@ export default function OfferingsPage() {
           <div className={styles.tabs}>
             <button className={`${styles.tab} ${tab === 'growing' ? styles.tabActive : ''}`}
               onClick={() => setTab('growing')}>
-              Growing
+              Planting
             </button>
             <button className={`${styles.tab} ${tab === 'seeking' ? styles.tabActive : ''}`}
               onClick={() => setTab('seeking')}>
-              Seeking
+              Harvesting
             </button>
           </div>
 
